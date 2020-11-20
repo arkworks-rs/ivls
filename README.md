@@ -1,6 +1,8 @@
 <h1 align="center">Incrementally Verifiable Ledger Systems (IVLS)</h1>
 
-This arkworks library describes an interface and contains an implementation for incrementally verifiable ledger systems (IVLS). An IVLS adds additional security properties to a ledger system, which consists of a state, a transition function, and a client function that reads data from the state. (Blockchains and transparency logs are two of the most prominent examples of ledger systems.) In an IVLS, each state is augmented with a proof that it has been achieved through valid transactions, and a succinct commitment relative to which the client function's answers can be proved. All proofs are succinct and can be efficiently verified.
+This arkworks library describes an interface and contains an implementation for incrementally verifiable ledger systems (IVLS).
+
+An IVLS adds additional security properties to a ledger system, which consists of a state, a transition function, and a client function that reads data from the state. (Blockchains and transparency logs are two of the most prominent examples of ledger systems.) In an IVLS, each state is augmented with a proof that it has been achieved through valid transactions, and a succinct commitment relative to which the client function's answers can be proved. All proofs are succinct and can be efficiently verified.
 
 This library is released under the MIT License and the Apache v2 License (see [License](#license)).
 
