@@ -390,7 +390,7 @@ mod test {
     type JubJubMerkleTree = MerkleSparseTree<JubJubMerkleTreeParams>;
 
     fn generate_merkle_tree(leaves: &BTreeMap<u64, [u8; 30]>, use_bad_root: bool) {
-        let mut rng = ark_ff::test_rng();
+        let mut rng = ark_std::test_rng();
 
         let crh_parameters = H::setup(&mut rng).unwrap();
         let tree = JubJubMerkleTree::new(crh_parameters.clone(), leaves).unwrap();
@@ -500,7 +500,7 @@ mod test {
         old_leaves: &BTreeMap<u64, [u8; 2]>,
         new_leaves: &BTreeMap<u64, [u8; 2]>,
     ) {
-        let mut rng = ark_ff::test_rng();
+        let mut rng = ark_std::test_rng();
 
         let crh_parameters = H::setup(&mut rng).unwrap();
         let mut tree = JubJubMerkleTree::new(crh_parameters.clone(), old_leaves).unwrap();

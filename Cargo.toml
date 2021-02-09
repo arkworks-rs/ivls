@@ -29,7 +29,7 @@ bench-utils = { git = "https://github.com/arkworks-rs/utils", default-features =
 ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
 ark-crypto-primitives = { git = "https://github.com/arkworks-rs/crypto-primitives", branch = "main", default-features = false, features = [ "r1cs" ] }
 ark-r1cs-std = { git = "https://github.com/arkworks-rs/r1cs-std", default-features = false  }
-ark-nonnative-field = { git = "https://github.com/arkworks-rs/nonnative", default-features = false, features = [ "density-optimized" ] }
+ark-nonnative-field = { git = "https://github.com/arkworks-rs/nonnative", default-features = false  }
 
 ark-ed-on-bls12-381 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
 ark-snark = { git = "https://github.com/arkworks-rs/snark", default-features = false }
@@ -43,8 +43,8 @@ tracing-subscriber = { version = "0.2", default-features = false, optional = tru
 
 ark-groth16 = { git = "https://github.com/arkworks-rs/groth16", default-features = false, features = [ "r1cs" ] }
 ark-gm17 = { git = "https://github.com/arkworks-rs/gm17", default-features = false, features = [ "r1cs" ] }
-ark-marlin = { git = "https://github.com/arkworks-rs/marlin", branch = "constraints", default-features = false, features = [ "density-optimized" ] }
-ark-poly-commit = { git = "https://github.com/arkworks-rs/poly-commit", branch = "constraints", default-features = false, features = [ "r1cs", "density-optimized" ] }
+ark-marlin = { git = "https://github.com/arkworks-rs/marlin", branch = "constraints", default-features = false }
+ark-poly-commit = { git = "https://github.com/arkworks-rs/poly-commit", branch = "constraints", default-features = false, features = [ "r1cs" ] }
 
 [dev-dependencies]
 tracing = { version = "0.1", default-features = false }

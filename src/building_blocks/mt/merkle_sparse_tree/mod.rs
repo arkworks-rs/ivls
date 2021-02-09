@@ -774,7 +774,7 @@ mod test {
     fn generate_merkle_tree_and_test_membership<L: Default + ToBytes + Clone + Eq>(
         leaves: &BTreeMap<u64, L>,
     ) {
-        let mut rng = ark_ff::test_rng();
+        let mut rng = ark_std::test_rng();
 
         let crh_parameters = H::setup(&mut rng).unwrap();
         let tree = JubJubMerkleTree::new(crh_parameters.clone(), leaves).unwrap();
@@ -807,7 +807,7 @@ mod test {
     fn generate_merkle_tree_with_bad_root_and_test_membership<L: Default + ToBytes + Clone + Eq>(
         leaves: &BTreeMap<u64, L>,
     ) {
-        let mut rng = ark_ff::test_rng();
+        let mut rng = ark_std::test_rng();
 
         let crh_parameters = H::setup(&mut rng).unwrap();
         let tree = JubJubMerkleTree::new(crh_parameters.clone(), leaves).unwrap();
@@ -835,7 +835,7 @@ mod test {
         old_leaves: &BTreeMap<u64, L>,
         new_leaves: &BTreeMap<u64, L>,
     ) {
-        let mut rng = ark_ff::test_rng();
+        let mut rng = ark_std::test_rng();
 
         let crh_parameters = H::setup(&mut rng).unwrap();
         let mut tree = JubJubMerkleTree::new(crh_parameters.clone(), old_leaves).unwrap();

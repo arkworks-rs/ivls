@@ -27,7 +27,7 @@ use ark_marlin::{
 use ark_ff::{biginteger::BigInteger320, fields::PrimeField};
 use ark_poly_commit::marlin_pc::{MarlinKZG10, MarlinKZG10Gadget};
 
-use ark_ec::CycleEngine;
+use ark_ec::{CurveCycle, PairingEngine, PairingFriendlyCycle};
 use ark_ivls::building_blocks::crh::poseidon::{
     PoseidonCRHforMerkleTree, PoseidonCRHforMerkleTreeGadget,
 };
@@ -46,16 +46,24 @@ use rand_chacha::ChaChaRng;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Mnt46298Cycle;
-impl CycleEngine for Mnt46298Cycle {
-    type E1 = MNT4_298;
-    type E2 = MNT6_298;
+impl CurveCycle for Mnt46298Cycle {
+    type E1 = <MNT4_298 as PairingEngine>::G1Affine;
+    type E2 = <MNT6_298 as PairingEngine>::G1Affine;
+}
+impl PairingFriendlyCycle for Mnt46298Cycle {
+    type Engine1 = MNT4_298;
+    type Engine2 = MNT6_298;
 }
 
 #[derive(Copy, Clone, Debug)]
 pub struct Mnt64298Cycle;
-impl CycleEngine for Mnt64298Cycle {
-    type E1 = MNT6_298;
-    type E2 = MNT4_298;
+impl CurveCycle for Mnt64298Cycle {
+    type E1 = <MNT6_298 as PairingEngine>::G1Affine;
+    type E2 = <MNT4_298 as PairingEngine>::G1Affine;
+}
+impl PairingFriendlyCycle for Mnt64298Cycle {
+    type Engine1 = MNT6_298;
+    type Engine2 = MNT4_298;
 }
 
 type FS4 = FiatShamirAlgebraicSpongeRng<Fr, Fq, PoseidonSponge<Fq>>;
@@ -135,7 +143,7 @@ type TestPCD = ECCyclePCD<Fr, Fq, PCDMarlin>;
 fn test_verifiable_transition_mnt_small_marlin_cycle_pcd() {
     type VC = VCTemplate<TestPCD>;
 
-    let mut rng = ark_ff::test_rng();
+    let mut rng = ark_std::test_rng();
 
     let setup_start = Instant::now();
     let pp = CircuitSpecificSetupIVLSCompiler::circuit_specific_setup(&mut rng).unwrap();

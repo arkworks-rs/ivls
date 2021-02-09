@@ -80,7 +80,7 @@ type TestPCD = ECCyclePCD<Fr, Fq, PCDGroth16Mnt4>;
 fn test_verifiable_transition_mnt_small_groth16_cycle_pcd() {
     type VC = VCTemplate<TestPCD>;
 
-    let mut rng = ark_ff::test_rng();
+    let mut rng = ark_std::test_rng();
 
     let setup_start = Instant::now();
     let pp = CircuitSpecificSetupIVLSCompiler::circuit_specific_setup(&mut rng).unwrap();

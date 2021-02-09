@@ -26,7 +26,7 @@ fn test_merkle_sparse_tree_pedersen() {
 
     type M = SparseMT<Fr, P, HG>;
 
-    let mut rng = ark_ff::test_rng();
+    let mut rng = ark_std::test_rng();
 
     let pp = M::setup(&mut rng).unwrap();
 
@@ -142,7 +142,7 @@ fn test_merkle_sparse_tree_poseidon() {
 
     type M = SparseMT<Fr, P, HG>;
 
-    let mut rng = ark_ff::test_rng();
+    let mut rng = ark_std::test_rng();
 
     let pp = M::setup(&mut rng).unwrap();
 
