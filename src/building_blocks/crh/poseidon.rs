@@ -57,7 +57,10 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField> CRHforMerkleTree
             field_bits_big_endian.reverse();
 
             field_elements.push(
-                F::from_repr(<F::BigInt as BigInteger>::from_bits(&field_bits_big_endian)).unwrap(),
+                F::from_repr(<F::BigInt as BigInteger>::from_bits_be(
+                    &field_bits_big_endian,
+                ))
+                .unwrap(),
             );
         }
 

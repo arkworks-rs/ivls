@@ -28,7 +28,7 @@ use ark_marlin::{
 use ark_ff::{biginteger::BigInteger320, fields::PrimeField};
 use ark_poly_commit::marlin_pc::{MarlinKZG10, MarlinKZG10Gadget};
 
-use ark_ec::CycleEngine;
+use ark_ec::{CurveCycle, PairingEngine, PairingFriendlyCycle};
 use ark_ivls::building_blocks::crh::poseidon::{
     PoseidonCRHforMerkleTree, PoseidonCRHforMerkleTreeGadget,
 };
@@ -46,24 +46,32 @@ use ark_std::time::Instant;
 use rand_chacha::ChaChaRng;
 
 #[derive(Copy, Clone, Debug)]
-pub struct MNT46298Cycle;
-impl CycleEngine for MNT46298Cycle {
-    type E1 = MNT4_298;
-    type E2 = MNT6_298;
+pub struct Mnt46298Cycle;
+impl CurveCycle for Mnt46298Cycle {
+    type E1 = <MNT4_298 as PairingEngine>::G1Affine;
+    type E2 = <MNT6_298 as PairingEngine>::G1Affine;
+}
+impl PairingFriendlyCycle for Mnt46298Cycle {
+    type Engine1 = MNT4_298;
+    type Engine2 = MNT6_298;
 }
 
 #[derive(Copy, Clone, Debug)]
-pub struct MNT64298Cycle;
-impl CycleEngine for MNT64298Cycle {
-    type E1 = MNT6_298;
-    type E2 = MNT4_298;
+pub struct Mnt64298Cycle;
+impl CurveCycle for Mnt64298Cycle {
+    type E1 = <MNT6_298 as PairingEngine>::G1Affine;
+    type E2 = <MNT4_298 as PairingEngine>::G1Affine;
+}
+impl PairingFriendlyCycle for Mnt64298Cycle {
+    type Engine1 = MNT6_298;
+    type Engine2 = MNT4_298;
 }
 
 type FS4 = FiatShamirAlgebraicSpongeRng<Fr, Fq, PoseidonSponge<Fq>>;
 type FS6 = FiatShamirAlgebraicSpongeRng<Fq, Fr, PoseidonSponge<Fr>>;
 
-type PCGadget4 = MarlinKZG10Gadget<MNT64298Cycle, DensePolynomial<Fr>, MNT4PairingVar>;
-type PCGadget6 = MarlinKZG10Gadget<MNT46298Cycle, DensePolynomial<Fq>, MNT6PairingVar>;
+type PCGadget4 = MarlinKZG10Gadget<Mnt64298Cycle, DensePolynomial<Fr>, MNT4PairingVar>;
+type PCGadget6 = MarlinKZG10Gadget<Mnt46298Cycle, DensePolynomial<Fq>, MNT6PairingVar>;
 
 type FSG4 = FiatShamirAlgebraicSpongeRngVar<Fr, Fq, PoseidonSponge<Fq>, PoseidonSpongeVar<Fq>>;
 type FSG6 = FiatShamirAlgebraicSpongeRngVar<Fq, Fr, PoseidonSponge<Fr>, PoseidonSpongeVar<Fr>>;
@@ -136,7 +144,7 @@ type TestPCD = ECCyclePCD<Fr, Fq, PCDMarlin>;
 fn test_verifiable_transition_mnt_small_marlin_universal_cycle_pcd() {
     type VC = VCTemplate<TestPCD>;
 
-    let mut rng = ark_ff::test_rng();
+    let mut rng = ark_std::test_rng();
 
     let bound = MarlinBound {
         max_degree: 2097152,
