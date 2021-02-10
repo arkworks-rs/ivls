@@ -160,9 +160,11 @@ where
         parameters: &<BoweHopwoodCRHforMerkleTree<RO, P> as CRHforMerkleTree>::Parameters,
         elts: &[Self::OutputVar],
     ) -> Result<Self::OutputVar, SynthesisError> {
-        let cs = elts[0].cs();
+        let cs = elts.cs();
 
         if cs == ConstraintSystemRef::None {
+            // Constant values
+            // Do not create constraints for them
             let mut writer = Cursor::new(Vec::<u8>::new());
             elts[0].value()?.write(&mut writer).unwrap();
             elts[1].value()?.write(&mut writer).unwrap();

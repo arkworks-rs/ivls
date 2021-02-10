@@ -192,7 +192,7 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField>
         parameters: &<PoseidonCRHforMerkleTree<RO, F> as CRHforMerkleTree>::Parameters,
         elts: &[Self::OutputVar],
     ) -> Result<Self::OutputVar, SynthesisError> {
-        let cs = elts[0].cs();
+        let cs = elts.cs();
 
         if cs == ConstraintSystemRef::None {
             let mut vals: Vec<F> = Vec::new();
