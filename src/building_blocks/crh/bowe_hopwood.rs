@@ -55,6 +55,19 @@ where
 
         VariableLengthBoweHopwoodCompressedCRH::<RO, P>::evaluate(parameters, &writer.into_inner())
     }
+
+    fn four_to_one_compress(
+        parameters: &Self::Parameters,
+        elts: &[Self::Output],
+    ) -> Result<Self::Output, Error> {
+        let mut writer = Cursor::new(Vec::<u8>::new());
+        elts[0].write(&mut writer)?;
+        elts[1].write(&mut writer)?;
+        elts[2].write(&mut writer)?;
+        elts[3].write(&mut writer)?;
+
+        VariableLengthBoweHopwoodCompressedCRH::<RO, P>::evaluate(parameters, &writer.into_inner())
+    }
 }
 
 /// Gadgets of the Bowe-Hopwood CRH combining with the compressor
@@ -132,6 +145,46 @@ where
 
             input.extend_from_slice(&left.to_bytes()?);
             input.extend_from_slice(&right.to_bytes()?);
+
+            let parameters =
+                VariableLengthBoweHopwoodParametersVar::<P>::new_constant(cs, parameters)?;
+
+            VariableLengthBoweHopwoodCompressedCRHGadget::<RO, P>::check_evaluation_gadget(
+                &parameters,
+                &input,
+            )
+        }
+    }
+
+    fn four_to_one_compress(
+        parameters: &<BoweHopwoodCRHforMerkleTree<RO, P> as CRHforMerkleTree>::Parameters,
+        elts: &[Self::OutputVar],
+    ) -> Result<Self::OutputVar, SynthesisError> {
+        let cs = elts.cs();
+
+        if cs == ConstraintSystemRef::None {
+            // Constant values
+            // Do not create constraints for them
+            let mut writer = Cursor::new(Vec::<u8>::new());
+            elts[0].value()?.write(&mut writer).unwrap();
+            elts[1].value()?.write(&mut writer).unwrap();
+            elts[2].value()?.write(&mut writer).unwrap();
+            elts[3].value()?.write(&mut writer).unwrap();
+
+            Ok(FpVar::<P::BaseField>::Constant(
+                VariableLengthBoweHopwoodCompressedCRH::<RO, P>::evaluate(
+                    parameters,
+                    &writer.into_inner(),
+                )
+                .unwrap(),
+            ))
+        } else {
+            let mut input = Vec::<UInt8<<P as ModelParameters>::BaseField>>::new();
+
+            input.extend_from_slice(&elts[0].to_bytes()?);
+            input.extend_from_slice(&elts[1].to_bytes()?);
+            input.extend_from_slice(&elts[2].to_bytes()?);
+            input.extend_from_slice(&elts[3].to_bytes()?);
 
             let parameters =
                 VariableLengthBoweHopwoodParametersVar::<P>::new_constant(cs, parameters)?;

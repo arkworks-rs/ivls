@@ -86,6 +86,19 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField> CRHforMerkleTree
         let res = sponge.squeeze(1);
         Ok(res[0])
     }
+
+    fn four_to_one_compress(
+        parameters: &Self::Parameters,
+        elts: &[Self::Output],
+    ) -> Result<Self::Output, Error> {
+        // Step 1: clone a freshly new sponge and put the field elements into
+        let mut sponge = parameters.clone();
+        sponge.absorb(elts);
+
+        // Step 2: output one element
+        let res = sponge.squeeze(1);
+        Ok(res[0])
+    }
 }
 
 /// Gadgets of the Bowe-Hopwood CRH combining with the compressor
@@ -168,6 +181,32 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField>
             // Step 1: clone a freshly new sponge and put the field elements into
             let mut sponge = PoseidonSpongeVar::constant(cs, parameters);
             sponge.absorb(&[left.clone(), right.clone()])?;
+
+            // Step 2: output one element
+            let res = sponge.squeeze(1)?;
+            Ok(res[0].clone())
+        }
+    }
+
+    fn four_to_one_compress(
+        parameters: &<PoseidonCRHforMerkleTree<RO, F> as CRHforMerkleTree>::Parameters,
+        elts: &[Self::OutputVar],
+    ) -> Result<Self::OutputVar, SynthesisError> {
+        let cs = elts.cs();
+
+        if cs == ConstraintSystemRef::None {
+            let mut vals: Vec<F> = Vec::new();
+            for i in 0..elts.len() {
+                vals.push(elts[i].value()?);
+            }
+
+            Ok(FpVar::<F>::Constant(
+                PoseidonCRHforMerkleTree::<RO, F>::four_to_one_compress(parameters, &vals).unwrap(),
+            ))
+        } else {
+            // Step 1: clone a freshly new sponge and put the field elements into
+            let mut sponge = PoseidonSpongeVar::constant(cs, parameters);
+            sponge.absorb(elts)?;
 
             // Step 2: output one element
             let res = sponge.squeeze(1)?;
