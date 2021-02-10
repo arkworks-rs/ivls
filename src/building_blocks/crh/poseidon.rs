@@ -195,7 +195,7 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField>
         let cs = elts[0].cs();
 
         if cs == ConstraintSystemRef::None {
-            let mut vals: Vec<F> = vec![];
+            let mut vals: Vec<F> = Vec::new();
             for i in 0..elts.len() {
                 vals.push(elts[i].value()?);
             }
