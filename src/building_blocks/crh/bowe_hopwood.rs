@@ -58,7 +58,7 @@ where
 
     fn four_to_one_compress(
         parameters: &Self::Parameters,
-        elts: &[Self::Output]
+        elts: &[Self::Output],
     ) -> Result<Self::Output, Error> {
         let mut writer = Cursor::new(Vec::<u8>::new());
         elts[0].write(&mut writer)?;
@@ -158,7 +158,7 @@ where
 
     fn four_to_one_compress(
         parameters: &<BoweHopwoodCRHforMerkleTree<RO, P> as CRHforMerkleTree>::Parameters,
-        elts: &[Self::OutputVar]
+        elts: &[Self::OutputVar],
     ) -> Result<Self::OutputVar, SynthesisError> {
         let cs = elts[0].cs();
 

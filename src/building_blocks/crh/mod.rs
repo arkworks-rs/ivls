@@ -30,11 +30,11 @@ pub trait CRHforMerkleTree {
         left: &Self::Output,
         right: &Self::Output,
     ) -> Result<Self::Output, Error>;
-    
+
     /// Hash four CRH outputs into one output
     fn four_to_one_compress(
         parameters: &Self::Parameters,
-        elts: &[Self::Output]
+        elts: &[Self::Output],
     ) -> Result<Self::Output, Error>;
 }
 
@@ -64,6 +64,6 @@ pub trait CRHforMerkleTreeGadget<CRH: CRHforMerkleTree, ConstraintF: PrimeField>
     /// Hash four CRH output variables into one
     fn four_to_one_compress(
         parameters: &CRH::Parameters,
-        elts: &[Self::OutputVar]
+        elts: &[Self::OutputVar],
     ) -> Result<Self::OutputVar, SynthesisError>;
 }

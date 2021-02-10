@@ -190,7 +190,7 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField>
 
     fn four_to_one_compress(
         parameters: &<PoseidonCRHforMerkleTree<RO, F> as CRHforMerkleTree>::Parameters,
-        elts: &[Self::OutputVar]
+        elts: &[Self::OutputVar],
     ) -> Result<Self::OutputVar, SynthesisError> {
         let cs = elts[0].cs();
 
@@ -201,11 +201,7 @@ impl<RO: Rng + CryptoRng + SeedableRng, F: PrimeField>
             }
 
             Ok(FpVar::<F>::Constant(
-                PoseidonCRHforMerkleTree::<RO, F>::four_to_one_compress(
-                    parameters,
-                    &vals
-                )
-                .unwrap(),
+                PoseidonCRHforMerkleTree::<RO, F>::four_to_one_compress(parameters, &vals).unwrap(),
             ))
         } else {
             // Step 1: clone a freshly new sponge and put the field elements into
