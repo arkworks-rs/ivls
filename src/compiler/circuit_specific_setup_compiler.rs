@@ -12,7 +12,7 @@ use crate::{
     Error, PhantomData,
 };
 use ark_pcd::PCD;
-use rand::{CryptoRng, RngCore};
+use ark_std::rand::{CryptoRng, RngCore};
 
 /// compiler for circuit-specifict setup IVLS
 pub struct CircuitSpecificSetupIVLSCompiler<VC: VerifiableTransitionFunctionConfig> {

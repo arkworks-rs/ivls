@@ -12,8 +12,8 @@ use crate::{
     Error, PhantomData,
 };
 use ark_pcd::UniversalSetupPCD;
-use rand::prelude::StdRng;
-use rand::{CryptoRng, RngCore, SeedableRng};
+use ark_std::rand::rngs::StdRng;
+use ark_std::rand::{CryptoRng, RngCore, SeedableRng};
 
 /// compiler for universal setup IVLS
 pub struct UniversalSetupIVLSCompiler<VC: VerifiableTransitionFunctionConfig>

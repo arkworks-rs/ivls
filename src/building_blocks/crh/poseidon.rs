@@ -5,8 +5,8 @@
 use crate::building_blocks::crh::{CRHforMerkleTree, CRHforMerkleTreeGadget};
 use crate::Error;
 use ark_ff::{BigInteger, FpParameters, PrimeField};
+use ark_std::rand::{CryptoRng, Rng, SeedableRng};
 use ark_std::{marker::PhantomData, vec::Vec};
-use rand::{CryptoRng, Rng, SeedableRng};
 
 use crate::gadgets::{FieldVar, FpVar, ToBitsGadget};
 use ark_marlin::fiat_shamir::constraints::AlgebraicSpongeVar;

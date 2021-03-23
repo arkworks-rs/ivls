@@ -3,7 +3,7 @@ use ark_ff::{PrimeField, ToBytes};
 use ark_r1cs_std::eq::EqGadget;
 use ark_r1cs_std::select::CondSelectGadget;
 use ark_r1cs_std::{alloc::AllocVar, bits::uint8::UInt8, R1CSVar, ToBytesGadget};
-use rand::{CryptoRng, Rng};
+use ark_std::rand::{CryptoRng, Rng};
 
 /// The Bowe-Hopwood variant of the Pedersen hash
 pub mod bowe_hopwood;

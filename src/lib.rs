@@ -27,11 +27,11 @@ pub(crate) use ark_std::{boxed::Box, vec::Vec};
 
 pub(crate) use ark_ff::{Field, PrimeField, ToBytes};
 pub(crate) use ark_relations::r1cs::SynthesisError;
+pub(crate) use ark_std::rand::RngCore;
 pub(crate) use ark_std::{
     borrow::Borrow,
     marker::{PhantomData, Sized},
 };
-pub(crate) use rand::RngCore;
 
 /// wrapped error types
 pub type Error = Box<dyn ark_std::error::Error>;
