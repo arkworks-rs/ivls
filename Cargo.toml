@@ -51,6 +51,7 @@ ark-mnt4-298 = { git = "https://github.com/arkworks-rs/curves", default-features
 ark-mnt6-298 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
 ark-mnt4-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "curve", "r1cs" ] }
 ark-mnt6-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
+rand_chacha = { version = "0.2", default-features = false }
 
 ###############################################################################
 
