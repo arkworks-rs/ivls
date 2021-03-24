@@ -4,7 +4,7 @@ use ark_ec::{ModelParameters, TEModelParameters};
 use ark_ff::{PrimeField, ToBytes};
 use ark_r1cs_std::bits::uint8::UInt8;
 use ark_r1cs_std::{R1CSVar, ToBytesGadget};
-use rand::{CryptoRng, Rng, SeedableRng};
+use ark_std::rand::{CryptoRng, Rng, SeedableRng};
 
 use crate::gadgets::FpVar;
 use ark_pcd::variable_length_crh::bowe_hopwood::constraints::{

@@ -14,8 +14,8 @@ use crate::{
 };
 use ark_pcd::{PCDPredicate, PCD};
 use ark_relations::r1cs::ConstraintSystemRef;
+use ark_std::rand::CryptoRng;
 use ark_std::vec;
-use rand::CryptoRng;
 
 /// a collection of types for an IVLS
 pub trait VerifiableTransitionFunctionConfig: Sized {

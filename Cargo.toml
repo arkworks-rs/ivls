@@ -34,8 +34,6 @@ ark-ed-on-bls12-381 = { git = "https://github.com/arkworks-rs/curves", default-f
 ark-snark = { git = "https://github.com/arkworks-rs/snark", default-features = false }
 ark-pcd = { git = "https://github.com/arkworks-rs/pcd", default-features = false }
 
-rand_chacha = { version = "0.2.1", default-features = false }
-rand = { version = "0.7", default-features = false  }
 derivative = { version = "2.0", features = ["use_core"] }
 
 tracing-subscriber = { version = "0.2", default-features = false, optional = true }
@@ -53,6 +51,7 @@ ark-mnt4-298 = { git = "https://github.com/arkworks-rs/curves", default-features
 ark-mnt6-298 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
 ark-mnt4-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "curve", "r1cs" ] }
 ark-mnt6-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
+rand_chacha = { version = "0.2", default-features = false }
 
 ###############################################################################
 

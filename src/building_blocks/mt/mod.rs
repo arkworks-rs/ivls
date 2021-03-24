@@ -10,11 +10,11 @@ use crate::{
 use ark_r1cs_std::alloc::AllocationMode;
 use ark_relations::r1cs::{ConstraintSystemRef, Namespace};
 use ark_std::collections::BTreeMap;
+use ark_std::rand::{CryptoRng, Rng};
 use ark_std::{
     io::{Result as IoResult, Write},
     string::ToString,
 };
-use rand::{CryptoRng, Rng};
 
 /// implementation of sparse Merkle tree
 pub mod merkle_sparse_tree;
