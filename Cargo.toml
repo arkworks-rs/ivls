@@ -36,7 +36,7 @@ ark-pcd = { git = "https://github.com/arkworks-rs/pcd", default-features = false
 
 derivative = { version = "2.0", features = ["use_core"] }
 
-tracing-subscriber = { version = "0.2", default-features = false, optional = true }
+tracing-subscriber = { version = "0.3.20", default-features = false, optional = true }
 
 ark-groth16 = { git = "https://github.com/arkworks-rs/groth16", default-features = false, features = [ "r1cs" ] }
 ark-gm17 = { git = "https://github.com/arkworks-rs/gm17", default-features = false, features = [ "r1cs" ] }
