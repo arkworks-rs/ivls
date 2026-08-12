@@ -24,6 +24,25 @@ cd ivls
 cargo build
 ```
 
+
+## Dependency freeze (archival)
+
+This repository is pinned to the **arkworks ecosystem as of ~2021-02-09** (the last
+period when `ark-pcd`, Marlin R1CS constraints, and this crate formed a coherent
+graph). Modern arkworks 0.4–0.6 is **not** drop-in compatible.
+
+Build:
+
+```bash
+./scripts/fetch-third-party.sh   # clones pinned upstream revs into third_party/
+cargo test --test merkle_sparse_tree --test state --test verifiable_transition_mnt_small_groth16
+```
+
+- Exact commits: `third_party/REVS.txt`
+- `third_party/*/` is gitignored; only the rev list and scripts are tracked
+- Builds use `.cargo/config.toml` (`--cap-lints=allow`) so old crates compile on new rustc
+- Full integration tests (Marlin / MNT-753) are very slow (tens of minutes to hours)
+
 ## Tests
 This library comes with comprehensive unit and integration tests. Run the tests with:
 ```bash

@@ -1,0 +1,3 @@
+# Frozen 2021-era dependencies emit many future-compat lints on modern rustc.
+[build]
+rustflags = ["--cap-lints=allow"]

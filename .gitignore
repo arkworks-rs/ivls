@@ -1,2 +1,5 @@
 target
-Cargo.lock
+
+# Frozen dep checkouts (see scripts/fetch-third-party.sh)
+third_party/*/
+!third_party/REVS.txt

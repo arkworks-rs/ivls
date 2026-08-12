@@ -8,49 +8,55 @@ authors = [
     "Nicholas Ward"
 ]
 description = "A library for decentralized private computation"
-repository = "https://github.com/scipr/zexe"
+repository = "https://github.com/arkworks-rs/ivls"
 keywords = ["zero knowledge", "cryptography", "smart contracts", "cryptocurrency"]
 categories = ["cryptography"]
 include = ["Cargo.toml", "src", "tests", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
 license = "MIT/Apache-2.0"
 edition = "2018"
 
+# Dependency freeze (~2021-02-09): path pins under third_party/ so nested git
+# deps cannot float to modern arkworks. Populate with:
+#   ./scripts/fetch-third-party.sh
+# See third_party/REVS.txt for exact upstream commits.
+
 ################################# Dependencies ################################
 
 [dependencies]
-ark-serialize = { git = "https://github.com/arkworks-rs/algebra", default-features = false, features = [ "derive" ] }
-ark-ff = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-ec = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
-ark-poly = { git = "https://github.com/arkworks-rs/algebra", default-features = false }
+ark-serialize = { path = "third_party/algebra/serialize", default-features = false, features = ["derive"] }
+ark-ff = { path = "third_party/algebra/ff", default-features = false }
+ark-ec = { path = "third_party/algebra/ec", default-features = false }
+ark-poly = { path = "third_party/algebra/poly", default-features = false }
 
-ark-std = { git = "https://github.com/arkworks-rs/utils", default-features = false }
+ark-std = { path = "third_party/utils/std", default-features = false }
+bench-utils = { path = "third_party/utils/bench-utils", default-features = false, optional = true }
 
-ark-relations = { git = "https://github.com/arkworks-rs/snark", default-features = false }
-ark-crypto-primitives = { git = "https://github.com/arkworks-rs/crypto-primitives", branch = "main", default-features = false, features = [ "r1cs" ] }
-ark-r1cs-std = { git = "https://github.com/arkworks-rs/r1cs-std", default-features = false  }
-ark-nonnative-field = { git = "https://github.com/arkworks-rs/nonnative", default-features = false  }
+ark-relations = { path = "third_party/snark/relations", default-features = false }
+ark-snark = { path = "third_party/snark/snark", default-features = false }
+ark-crypto-primitives = { path = "third_party/crypto-primitives", default-features = false, features = ["r1cs"] }
+ark-r1cs-std = { path = "third_party/r1cs-std", default-features = false }
+ark-nonnative-field = { path = "third_party/nonnative", default-features = false }
 
-ark-ed-on-bls12-381 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
-ark-snark = { git = "https://github.com/arkworks-rs/snark", default-features = false }
-ark-pcd = { git = "https://github.com/arkworks-rs/pcd", default-features = false }
+ark-ed-on-bls12-381 = { path = "third_party/curves/ed_on_bls12_381", default-features = false, features = ["r1cs"] }
+ark-pcd = { path = "third_party/pcd", default-features = false }
 
 derivative = { version = "2.0", features = ["use_core"] }
 
-tracing-subscriber = { version = "0.3.20", default-features = false, optional = true }
+tracing-subscriber = { version = "0.2", default-features = false, features = ["registry"], optional = true }
 
-ark-groth16 = { git = "https://github.com/arkworks-rs/groth16", default-features = false, features = [ "r1cs" ] }
-ark-gm17 = { git = "https://github.com/arkworks-rs/gm17", default-features = false, features = [ "r1cs" ] }
-ark-marlin = { git = "https://github.com/arkworks-rs/marlin", branch = "constraints", default-features = false }
-ark-poly-commit = { git = "https://github.com/arkworks-rs/poly-commit", branch = "constraints", default-features = false, features = [ "r1cs" ] }
+ark-groth16 = { path = "third_party/groth16", default-features = false, features = ["r1cs"] }
+ark-gm17 = { path = "third_party/gm17", default-features = false, features = ["r1cs"] }
+ark-marlin = { path = "third_party/marlin", default-features = false }
+ark-poly-commit = { path = "third_party/poly-commit", default-features = false, features = ["r1cs"] }
 
 [dev-dependencies]
 tracing = { version = "0.1", default-features = false }
-ark-ed-on-mnt4-298 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
-ark-ed-on-mnt4-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
-ark-mnt4-298 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
-ark-mnt6-298 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
-ark-mnt4-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "curve", "r1cs" ] }
-ark-mnt6-753 = { git = "https://github.com/arkworks-rs/curves", default-features = false, features = [ "r1cs" ] }
+ark-ed-on-mnt4-298 = { path = "third_party/curves/ed_on_mnt4_298", default-features = false, features = ["r1cs"] }
+ark-ed-on-mnt4-753 = { path = "third_party/curves/ed_on_mnt4_753", default-features = false, features = ["r1cs"] }
+ark-mnt4-298 = { path = "third_party/curves/mnt4_298", default-features = false, features = ["r1cs"] }
+ark-mnt6-298 = { path = "third_party/curves/mnt6_298", default-features = false, features = ["r1cs"] }
+ark-mnt4-753 = { path = "third_party/curves/mnt4_753", default-features = false, features = ["curve", "r1cs"] }
+ark-mnt6-753 = { path = "third_party/curves/mnt6_753", default-features = false, features = ["r1cs"] }
 rand_chacha = { version = "0.2", default-features = false }
 
 ###############################################################################
@@ -59,8 +65,83 @@ rand_chacha = { version = "0.2", default-features = false }
 
 [features]
 default = ["std"]
-std = [ "ark-ff/std", "tracing-subscriber", "ark-ec/std", "ark-poly/std", "ark-std/std", "ark-serialize/std", "ark-poly-commit/std", "ark-marlin/std", "ark-crypto-primitives/std", "ark-r1cs-std/std", "ark-nonnative-field/std", "ark-groth16/std", "ark-gm17/std", "ark-relations/std", "ark-pcd/std"]
-print-trace = [ "ark-std/print-trace" ]
+std = [
+    "ark-ff/std",
+    "tracing-subscriber",
+    "ark-ec/std",
+    "ark-poly/std",
+    "ark-std/std",
+    "ark-serialize/std",
+    "ark-poly-commit/std",
+    "ark-marlin/std",
+    "ark-crypto-primitives/std",
+    "ark-r1cs-std/std",
+    "ark-nonnative-field/std",
+    "ark-groth16/std",
+    "ark-gm17/std",
+    "ark-relations/std",
+    "ark-pcd/std",
+]
+print-trace = ["bench-utils", "bench-utils/print-trace"]
+
+###############################################################################
+
+# Rewrite every nested `git = "https://github.com/arkworks-rs/..."` onto the
+# frozen path checkouts so resolution cannot touch branch tips.
+
+[patch."https://github.com/arkworks-rs/algebra"]
+ark-serialize = { path = "third_party/algebra/serialize" }
+ark-ff = { path = "third_party/algebra/ff" }
+ark-ec = { path = "third_party/algebra/ec" }
+ark-poly = { path = "third_party/algebra/poly" }
+ark-ff-asm = { path = "third_party/algebra/ff-asm" }
+ark-ff-macros = { path = "third_party/algebra/ff-macros" }
+ark-serialize-derive = { path = "third_party/algebra/serialize-derive" }
+
+[patch."https://github.com/arkworks-rs/utils"]
+ark-std = { path = "third_party/utils/std" }
+bench-utils = { path = "third_party/utils/bench-utils" }
+
+[patch."https://github.com/arkworks-rs/snark"]
+ark-relations = { path = "third_party/snark/relations" }
+ark-snark = { path = "third_party/snark/snark" }
+
+[patch."https://github.com/arkworks-rs/crypto-primitives"]
+ark-crypto-primitives = { path = "third_party/crypto-primitives" }
+
+[patch."https://github.com/arkworks-rs/crypto-primitives.git"]
+ark-crypto-primitives = { path = "third_party/crypto-primitives" }
+
+[patch."https://github.com/arkworks-rs/r1cs-std"]
+ark-r1cs-std = { path = "third_party/r1cs-std" }
+
+[patch."https://github.com/arkworks-rs/nonnative"]
+ark-nonnative-field = { path = "third_party/nonnative" }
+
+[patch."https://github.com/arkworks-rs/curves"]
+ark-ed-on-bls12-381 = { path = "third_party/curves/ed_on_bls12_381" }
+ark-ed-on-mnt4-298 = { path = "third_party/curves/ed_on_mnt4_298" }
+ark-ed-on-mnt4-753 = { path = "third_party/curves/ed_on_mnt4_753" }
+ark-mnt4-298 = { path = "third_party/curves/mnt4_298" }
+ark-mnt6-298 = { path = "third_party/curves/mnt6_298" }
+ark-mnt4-753 = { path = "third_party/curves/mnt4_753" }
+ark-mnt6-753 = { path = "third_party/curves/mnt6_753" }
+ark-bls12-381 = { path = "third_party/curves/bls12_381" }
+
+[patch."https://github.com/arkworks-rs/groth16"]
+ark-groth16 = { path = "third_party/groth16" }
+
+[patch."https://github.com/arkworks-rs/gm17"]
+ark-gm17 = { path = "third_party/gm17" }
+
+[patch."https://github.com/arkworks-rs/marlin"]
+ark-marlin = { path = "third_party/marlin" }
+
+[patch."https://github.com/arkworks-rs/poly-commit"]
+ark-poly-commit = { path = "third_party/poly-commit" }
+
+[patch."https://github.com/arkworks-rs/pcd"]
+ark-pcd = { path = "third_party/pcd" }
 
 ###############################################################################
 
@@ -87,4 +168,3 @@ lto = "thin"
 incremental = true
 debug-assertions = true
 debug = true
-

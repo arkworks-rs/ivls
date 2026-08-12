@@ -1,0 +1,14 @@
+# arkworks dependency freeze for ark-ivls (~2021-02-09)
+# Matches ivls commit 8175671 "Update IVLS to match the updates in dependency libraries"
+algebra            b6c08c165ed13f3341cd5769e9d794f16104d2c3
+utils              3a49af11633965f3401e888f1f5ac2fe28a946b1
+snark              f3d9b35a81d247e2c82db2bbaaff499b954d2db2
+crypto-primitives  e944fb11778176c479d1b75053d10b70b250cc4c
+r1cs-std           09f3613aac63ebecfbd26e518a36eb59fe404f5c
+nonnative          08666f53130d0b6eb57cfe565877c174e6a84c43
+curves             666da1e3b22ad0f46418fb89d4e81eddfd7296c1
+groth16            681c0f1312cebf96b9664884ec32347a47f489de
+gm17               6fa1b56fe817848ceca7abea25e7b21dfe2ff864
+marlin             aa0728cd2f861820521dcc0fb5fd1ae0f68dcb13
+poly-commit        93969dcfb9a90591a1a4d1952600a500a809c387
+pcd                a5fd90a751b6b1b2a58d5ee0049c03de575e985b
