@@ -1,3 +1,4 @@
-# Frozen 2021-era dependencies emit many future-compat lints on modern rustc.
-[build]
-rustflags = ["--cap-lints=allow"]
+# Intentionally empty of [build].rustflags.
+# Putting --cap-lints=allow here breaks `cargo --target aarch64-unknown-none`
+# target discovery on modern cargo. Set RUSTFLAGS in the environment instead
+# (see .github/workflows/rust.yml and README).

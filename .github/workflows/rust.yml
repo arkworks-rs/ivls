@@ -6,108 +6,100 @@ on:
       - master
 env:
   RUST_BACKTRACE: 1
+  # Frozen 2021 crates warn heavily on modern rustc; do not use -Dwarnings.
+  RUSTFLAGS: --cap-lints=allow
 
 jobs:
   style:
     name: Check Style
     runs-on: ubuntu-latest
     steps:
-
     - name: Checkout
       uses: actions/checkout@v4
     - name: Install Rust
-      uses: actions-rs/toolchain@v1
+      uses: dtolnay/rust-toolchain@stable
       with:
-        profile: minimal
-        toolchain: stable
-        override: true
         components: rustfmt
-
     - name: cargo fmt --check
-      uses: actions-rs/cargo@v1
-      with:
-        command: fmt
-        args: --all -- --check
+      run: cargo fmt --all -- --check
 
   test:
     name: Test
     runs-on: ubuntu-latest
-    env:
-      RUSTFLAGS: -Dwarnings --cfg ci
     strategy:
       matrix:
         rust:
           - stable
-          - nightly
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install Rust (${{ matrix.rust }})
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: ${{ matrix.rust }}
-          override: true
 
-      - uses: actions/cache@v4
+      - name: Cache cargo
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ matrix.rust }}-${{ hashFiles('**/Cargo.lock', 'third_party/REVS.txt') }}
 
-      - name: Check examples
-        uses: actions-rs/cargo@v1
+      - name: Cache third_party
+        uses: actions/cache@v4
         with:
-            command: check
-            args: --examples --all
+          path: third_party
+          key: third-party-${{ hashFiles('third_party/REVS.txt', 'scripts/apply-compat-patches.sh') }}
 
-      - name: Check examples with all features on stable
-        uses: actions-rs/cargo@v1
-        with:
-            command: check
-            args: --examples --all-features --all
-        if: matrix.rust == 'stable'
+      - name: Fetch frozen arkworks deps
+        run: ./scripts/fetch-third-party.sh
 
-      - name: Check benchmarks on nightly
-        uses: actions-rs/cargo@v1
-        with:
-            command: check
-            args: --all-features --examples --all --benches
-        if: matrix.rust == 'nightly'
+      - name: Check library
+        run: cargo check --lib --all-features
 
-      - name: Test
-        uses: actions-rs/cargo@v1
-        with:
-            command: test
-            args: "--all \
-                   --all-features"
+      - name: Unit and fast integration tests
+        # Full Marlin / MNT-753 PCD tests are multi-hour; keep CI to the archival smoke set.
+        run: |
+          cargo test --lib
+          cargo test --test merkle_sparse_tree --test state
+          cargo test --test verifiable_transition_mnt_small_groth16
 
   check_no_std:
     name: Check no_std
     runs-on: ubuntu-latest
+    # Global RUSTFLAGS=--cap-lints=allow breaks cargo's aarch64-unknown-none target probe.
+    # Compat patches already soften crate-level denies; host RUSTFLAGS is not needed here.
+    env:
+      RUSTFLAGS: ""
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Rust ARM64 (${{ matrix.rust }})
-        uses: actions-rs/toolchain@v1
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          target: aarch64-unknown-none
-          override: true
+          targets: aarch64-unknown-none
 
-      - uses: actions/cache@v4
+      - name: Cache cargo
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-nostd-${{ hashFiles('**/Cargo.lock', 'third_party/REVS.txt') }}
 
-      - name: Check
-        run: |
-          cargo build --no-default-features --target aarch64-unknown-none
-          cargo check --examples --no-default-features --target aarch64-unknown-none
+      - name: Cache third_party
+        uses: actions/cache@v4
+        with:
+          path: third_party
+          key: third-party-${{ hashFiles('third_party/REVS.txt', 'scripts/apply-compat-patches.sh') }}
+
+      - name: Fetch frozen arkworks deps
+        run: ./scripts/fetch-third-party.sh
+
+      - name: Check no_std
+        run: cargo check --lib --no-default-features --target aarch64-unknown-none

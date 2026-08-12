@@ -40,7 +40,7 @@ cargo test --test merkle_sparse_tree --test state --test verifiable_transition_m
 
 - Exact commits: `third_party/REVS.txt`
 - `third_party/*/` is gitignored; only the rev list and scripts are tracked
-- Builds use `.cargo/config.toml` (`--cap-lints=allow`) so old crates compile on new rustc
+- Export `RUSTFLAGS=--cap-lints=allow` so old crates compile on new rustc (do not put this in `.cargo/config.toml`; it breaks bare-metal target probes)
 - Full integration tests (Marlin / MNT-753) are very slow (tens of minutes to hours)
 
 ## Tests
